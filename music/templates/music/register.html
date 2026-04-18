@@ -1,0 +1,37 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+                <h4 class="m-0 py-2">Criar Nova Conta</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label"><strong>{{ field.label }}</strong></label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text text-muted" style="font-size: 0.8rem;">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success w-100 mt-3 shadow-sm">Cadastrar</button>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <a href="{% url 'login' %}" class="text-decoration-none">Já tem uma conta? Faça Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Pequeno ajuste para os inputs do Django ficarem bonitos com Bootstrap */
+    input { display: block; width: 100%; padding: .375rem .75rem; border: 1px solid #ced4da; border-radius: .375rem; }
+</style>
+{% endblock %}

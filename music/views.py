@@ -5,7 +5,7 @@ from rest_framework import viewsets  # Importação adicionada para a API
 from .models import Music
 from .forms import MusicForm
 from .serializers import MusicSerializer  # Importação adicionada para a API
-
+from django.contrib.auth.forms import UserCreationForm
 # VIEWS TRADICIONAIS (INTERFACE WEB / CRUD)
 
 @login_required
@@ -49,6 +49,17 @@ def music_delete(request, pk):
         return redirect('music_list')
         
     return render(request, 'music/music_confirm_delete.html', {'musica': musica})
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Conta criada com sucesso! Agora você pode entrar.")
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'music/register.html', {'form': form})
 
 # VIEWS DA API REST (JSON)
 class MusicViewSet(viewsets.ModelViewSet):

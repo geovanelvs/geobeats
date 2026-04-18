@@ -12,6 +12,7 @@ urlpatterns = [
     path('add/', views.music_add, name='music_add'),
     path('update/<int:pk>/', views.music_update, name='music_update'),
     path('delete/<int:pk>/', views.music_delete, name='music_delete'),
+    path('register/', views.register, name='register'),
     
     # Rota da API (JSON)
     path('api/', include(router.urls)),
