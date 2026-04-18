@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from rest_framework import viewsets  # Importação adicionada para a API
 from .models import Music
 from .forms import MusicForm
+from .serializers import MusicSerializer  # Importação adicionada para a API
+
+# VIEWS TRADICIONAIS (INTERFACE WEB / CRUD)
 
 @login_required
 def music_list(request):
@@ -45,3 +49,8 @@ def music_delete(request, pk):
         return redirect('music_list')
         
     return render(request, 'music/music_confirm_delete.html', {'musica': musica})
+
+# VIEWS DA API REST (JSON)
+class MusicViewSet(viewsets.ModelViewSet):
+    queryset = Music.objects.all()
+    serializer_class = MusicSerializer
