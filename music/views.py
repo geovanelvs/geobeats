@@ -7,10 +7,10 @@ from .forms import MusicForm
 from .serializers import MusicSerializer  # Importação adicionada para a API
 from django.contrib.auth.forms import UserCreationForm
 # VIEWS TRADICIONAIS (INTERFACE WEB / CRUD)
-
 @login_required
 def music_list(request):
-    musicas = Music.objects.all()
+    # Filtra as músicas: apenas as que pertencem ao usuário logado
+    musicas = Music.objects.filter(usuario=request.user) 
     return render(request, 'music/music_list.html', {'musicas': musicas})
 
 @login_required
@@ -18,9 +18,12 @@ def music_add(request):
     if request.method == "POST":
         form = MusicForm(request.POST)
         if form.is_valid():
-            form.save()
+            musica = form.save(commit=False) # Cria o objeto mas não salva no banco ainda
+            musica.usuario = request.user    # Atribui o utilizador logado automaticamente
+            musica.save()                    # Agora sim, salva com o dono
             messages.success(request, "Música adicionada com sucesso!")
             return redirect('music_list')
+    # ... resto da função
     else:
         form = MusicForm()
     return render(request, 'music/music_form.html', {'form': form, 'titulo': 'Adicionar Música'})
