@@ -1,3 +1,21 @@
 from django.contrib import admin
+from .models import Categoria, Music, Playlist
 
-# Register your models here.
+# Configuração para a Categoria aparecer no Admin
+@admin.register(Categoria)
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = ('nome',)
+    search_fields = ('nome',)
+
+# Configuração para a Música aparecer no Admin
+@admin.register(Music)
+class MusicAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'artista', 'tempo', 'categoria')
+    list_filter = ('categoria', 'artista')
+    search_fields = ('titulo', 'artista')
+
+# Configuração para a Playlist aparecer no Admin
+@admin.register(Playlist)
+class PlaylistAdmin(admin.ModelAdmin):
+    list_display = ('nome',)
+    filter_horizontal = ('musicas',) 

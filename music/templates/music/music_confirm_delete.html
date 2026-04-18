@@ -1,0 +1,23 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Atenção!</h4>
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title">Tens a certeza que queres apagar esta música?</h5>
+                <p class="card-text text-muted"><strong>{{ musica.titulo }}</strong> de {{ musica.artista }}</p>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <a href="{% url 'music_list' %}" class="btn btn-secondary me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-danger">Sim, apagar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
