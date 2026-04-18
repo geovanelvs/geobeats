@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Categoria, Music, Playlist
 
+# REMOVEMOS as linhas admin.site.register daqui, pois elas causam o erro de duplicidade.
+
 # Configuração para a Categoria aparecer no Admin
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
@@ -17,5 +19,5 @@ class MusicAdmin(admin.ModelAdmin):
 # Configuração para a Playlist aparecer no Admin
 @admin.register(Playlist)
 class PlaylistAdmin(admin.ModelAdmin):
-    list_display = ('nome',)
-    filter_horizontal = ('musicas',) 
+    list_display = ('nome', 'usuario') # Adicionei 'usuario' para você ver quem é o dono
+    filter_horizontal = ('musicas',)

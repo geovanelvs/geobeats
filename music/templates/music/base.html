@@ -11,6 +11,16 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow">
         <div class="container">
             <a class="navbar-brand" href="{% url 'music_list' %}">🎵 GeoBeats</a>
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 flex-row gap-4 ms-4">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'music_list' %}">Músicas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-success fw-bold" href="{% url 'playlist_list' %}">Playlists</a>
+                </li>
+            </ul>
+
             <div class="d-flex align-items-center">
                 {% if user.is_authenticated %}
                     <span class="text-white me-3">Olá, {{ user.username }}</span>

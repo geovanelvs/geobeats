@@ -1,0 +1,15 @@
+{% extends 'music/base.html' %} {% block content %}
+<div class="card shadow p-4 mx-auto border-danger" style="max-width: 500px;">
+    <h2 class="text-danger">Excluir Playlist</h2>
+    <hr>
+    <p>Você tem certeza que deseja apagar a playlist <strong>"{{ playlist.nome }}"</strong>?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'playlist_list' %}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-danger">Sim, quero apagar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

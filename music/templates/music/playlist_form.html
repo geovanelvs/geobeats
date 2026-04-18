@@ -1,0 +1,23 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+<div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+    <h2>{{ titulo }}</h2>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Nome da Playlist:</label>
+            {{ form.nome }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Selecione as Músicas:</label>
+            <div class="border p-3 rounded bg-light" style="max-height: 300px; overflow-y: auto;">
+                {{ form.musicas }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Salvar Playlist</button>
+        <a href="{% url 'playlist_list' %}" class="btn btn-link w-100 mt-2 text-secondary">Voltar</a>
+    </form>
+</div>
+{% endblock %}

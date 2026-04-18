@@ -1,16 +1,21 @@
 from django import forms
-from .models import Music
+from .models import Music, Playlist 
 
 class MusicForm(forms.ModelForm):
     class Meta:
         model = Music
         fields = ['titulo', 'artista', 'tempo', 'categoria']
-        
+
+class PlaylistForm(forms.ModelForm):
+    class Meta:
+        model = Playlist
+        fields = ['nome', 'musicas']
+        widgets = {
+            'musicas': forms.CheckboxSelectMultiple(),
+        } 
+
     def __init__(self, *args, **kwargs):
-        """
-        Este método inicializa o formulário e aplica a classe 'form-control' 
-        do Bootstrap em todos os campos automaticamente.
-        """
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+        user = kwargs.pop('user', None) 
+        super(PlaylistForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['musicas'].queryset = Music.objects.filter(usuario=user)

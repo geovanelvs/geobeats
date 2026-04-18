@@ -16,7 +16,8 @@ class Music(models.Model):
 
 class Playlist(models.Model):
     nome = models.CharField(max_length=100)
-    musicas = models.ManyToManyField(Music)
-    
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    musicas = models.ManyToManyField(Music, related_name='playlists')
+
     def __str__(self):
         return self.nome
