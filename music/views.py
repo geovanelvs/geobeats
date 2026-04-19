@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from rest_framework import viewsets
 from .models import Music, Playlist, Album          
 from .forms import MusicForm, PlaylistForm, AlbumForm
-from .serializers import MusicSerializer, PlaylistSerializer
+from .serializers import MusicSerializer, PlaylistSerializer, AlbumSerializer
 from django.db.models import Q
 
 # ==========================================
@@ -22,6 +22,10 @@ class PlaylistViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Playlist.objects.filter(usuario=self.request.user)
 
+class AlbumViewSet(viewsets.ModelViewSet):
+    serializer_class = AlbumSerializer
+    def get_queryset(self):
+        return Album.objects.filter(usuario=self.request.user)
 
 # ==========================================
 # 2. PÁGINA DE REGISTO DE UTILIZADORES

@@ -1,13 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import MusicViewSet, PlaylistViewSet
+from .views import MusicViewSet, PlaylistViewSet, AlbumViewSet
 from music import views
 
 # Configuração da API
 router = DefaultRouter()
-# ADICIONAMOS O BASENAME AQUI NA LINHA ABAIXO:
 router.register(r'musicas', views.MusicViewSet, basename='music-api') 
 router.register(r'playlists', PlaylistViewSet, basename='playlist-api')
+router.register(r'albuns', AlbumViewSet, basename='album-api')
 
 urlpatterns = [
     # Rotas do CRUD (Visual)
@@ -24,6 +24,7 @@ urlpatterns = [
     path('playlists/add/', views.playlist_add, name='playlist_add'),
     path('playlists/editar/<int:id>/', views.playlist_edit, name='playlist_edit'),
     path('playlists/apagar/<int:id>/', views.playlist_delete, name='playlist_delete'),
+    
     path('albuns/', views.album_list, name='album_list'),
     path('albuns/adicionar/', views.album_add, name='album_add'),
     path('albuns/editar/<int:pk>/', views.album_edit, name='album_edit'),
