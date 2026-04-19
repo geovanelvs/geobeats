@@ -7,6 +7,7 @@ from rest_framework import viewsets
 from .models import Music, Playlist
 from .forms import MusicForm, PlaylistForm
 from .serializers import MusicSerializer, PlaylistSerializer
+from django.db.models import Q
 
 # ==========================================
 # 1. API ViewSets (Para o JSON e Integrações)
@@ -43,10 +44,19 @@ def register(request):
 # ==========================================
 @login_required
 def music_list(request):
-    # Lista apenas as músicas do utilizador logado
+    # Começa pegando todas as músicas do usuário logado
     musicas = Music.objects.filter(usuario=request.user) 
+    
+    # Verifica se o usuário digitou algo na barra de pesquisa
+    busca = request.GET.get('busca')
+    
+    if busca:
+        # Se digitou, filtra as músicas onde o título OU o artista contêm a palavra
+        musicas = musicas.filter(
+            Q(titulo__icontains=busca) | Q(artista__icontains=busca)
+        )
+        
     return render(request, 'music/music_list.html', {'musicas': musicas})
-
 @login_required
 def music_add(request):
     if request.method == "POST":
