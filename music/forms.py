@@ -1,5 +1,5 @@
 from django import forms
-from .models import Music, Playlist 
+from .models import Music, Playlist, Album
 
 class MusicForm(forms.ModelForm):
     class Meta:
@@ -19,3 +19,8 @@ class PlaylistForm(forms.ModelForm):
         super(PlaylistForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['musicas'].queryset = Music.objects.filter(usuario=user)
+
+class AlbumForm(forms.ModelForm):
+    class Meta:
+        model = Album
+        fields = ['titulo', 'artista', 'ano']

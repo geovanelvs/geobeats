@@ -21,3 +21,12 @@ class Playlist(models.Model):
 
     def __str__(self):
         return self.nome
+
+class Album(models.Model):
+    titulo = models.CharField(max_length=100)
+    artista = models.CharField(max_length=100)
+    ano = models.IntegerField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.titulo} - {self.artista}"
