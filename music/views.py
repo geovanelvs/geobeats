@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework import viewsets
 
-from .models import Music, Playlist
-from .forms import MusicForm, PlaylistForm
+from .models import Music, Playlist, Album          
+from .forms import MusicForm, PlaylistForm, AlbumForm
 from .serializers import MusicSerializer, PlaylistSerializer
 from django.db.models import Q
 
@@ -44,14 +44,9 @@ def register(request):
 # ==========================================
 @login_required
 def music_list(request):
-    # Começa pegando todas as músicas do usuário logado
     musicas = Music.objects.filter(usuario=request.user) 
-    
-    # Verifica se o usuário digitou algo na barra de pesquisa
-    busca = request.GET.get('busca')
-    
+    busca = request.GET.get('busca')  
     if busca:
-        # Se digitou, filtra as músicas onde o título OU o artista contêm a palavra
         musicas = musicas.filter(
             Q(titulo__icontains=busca) | Q(artista__icontains=busca)
         )
@@ -149,3 +144,22 @@ def playlist_delete(request, id):
         return redirect('playlist_list')
         
     return render(request, 'music/playlist_confirm_delete.html', {'playlist': playlist})
+
+@login_required
+def album_list(request):
+    albuns = Album.objects.filter(usuario=request.user)
+    return render(request, 'music/album_list.html', {'albuns': albuns})
+
+@login_required
+def album_add(request):
+    if request.method == 'POST':
+        form = AlbumForm(request.POST)
+        if form.is_valid():
+            album = form.save(commit=False)
+            album.usuario = request.user
+            album.save()
+            messages.success(request, 'Álbum salvo com sucesso!')
+            return redirect('album_list')
+    else:
+        form = AlbumForm()
+    return render(request, 'music/album_form.html', {'form': form})

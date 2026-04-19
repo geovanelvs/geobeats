@@ -9,8 +9,8 @@ class Music(models.Model):
     artista = models.CharField(max_length=200)
     tempo = models.CharField(max_length=10)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
-    # Adicione esta linha abaixo:
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    album = models.ForeignKey('Album', on_delete=models.SET_NULL, null=True, blank=True, related_name='musicas')
 
     def __str__(self): return self.titulo
 
