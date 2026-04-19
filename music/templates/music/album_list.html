@@ -14,6 +14,7 @@
                     <th>Título</th>
                     <th>Artista</th>
                     <th>Ano</th>
+                    <th class="text-end">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,10 +23,14 @@
                         <td><strong>{{ album.titulo }}</strong></td>
                         <td>{{ album.artista }}</td>
                         <td>{{ album.ano }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'album_edit' album.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <a href="{% url 'album_delete' album.pk %}" class="btn btn-sm btn-outline-danger">Excluir</a>
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="3" class="text-center py-4 text-muted">Nenhum álbum cadastrado. Comece por adicionar um!</td>
+                        <td colspan="4" class="text-center py-4 text-muted">Nenhum álbum cadastrado. Comece por adicionar um!</td>
                     </tr>
                 {% endfor %}
             </tbody>

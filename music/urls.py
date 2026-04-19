@@ -26,4 +26,6 @@ urlpatterns = [
     path('playlists/apagar/<int:id>/', views.playlist_delete, name='playlist_delete'),
     path('albuns/', views.album_list, name='album_list'),
     path('albuns/adicionar/', views.album_add, name='album_add'),
+    path('albuns/editar/<int:pk>/', views.album_edit, name='album_edit'),
+    path('albuns/excluir/<int:pk>/', views.album_delete, name='album_delete'),
 ]

@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework import viewsets
-
 from .models import Music, Playlist, Album          
 from .forms import MusicForm, PlaylistForm, AlbumForm
 from .serializers import MusicSerializer, PlaylistSerializer
@@ -111,7 +110,6 @@ def playlist_add(request):
             messages.success(request, "Playlist criada com sucesso!")
             return redirect('playlist_list') 
     else:
-        # AQUI: Passamos o user=request.user
         form = PlaylistForm(user=request.user)
     return render(request, 'music/playlist_form.html', {'form': form, 'titulo': 'Criar Nova Playlist'})
 
@@ -163,3 +161,24 @@ def album_add(request):
     else:
         form = AlbumForm()
     return render(request, 'music/album_form.html', {'form': form})
+@login_required
+def album_edit(request, pk):
+    album = get_object_or_404(Album, pk=pk, usuario=request.user)
+    if request.method == 'POST':
+        form = AlbumForm(request.POST, instance=album)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Álbum atualizado com sucesso!')
+            return redirect('album_list')
+    else:
+        form = AlbumForm(instance=album)
+    return render(request, 'music/album_form.html', {'form': form})
+
+@login_required
+def album_delete(request, pk):
+    album = get_object_or_404(Album, pk=pk, usuario=request.user)
+    if request.method == 'POST':
+        album.delete()
+        messages.success(request, 'Álbum excluído com sucesso!')
+        return redirect('album_list')
+    return render(request, 'music/album_delete_confirm.html', {'album': album})
