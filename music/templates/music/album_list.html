@@ -1,40 +1,85 @@
 {% extends 'music/base.html' %}
 
 {% block content %}
-<div class="card shadow-sm mb-4">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-        <h4 class="m-0">Meus Álbuns</h4>
-        <a href="{% url 'album_add' %}" class="btn btn-primary">Adicionar Álbum</a>
+<div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center py-4 px-2 mb-3">
+        <h2 class="m-0 text-white fw-bold" style="font-size: 2rem;">Meus Álbuns</h2>
+        <a href="{% url 'album_add' %}" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm">
+            <i class="bi bi-plus-lg me-2"></i>Adicionar Álbum
+        </a>
     </div>
     
     <div class="table-responsive">
-        <table class="table table-hover align-middle m-0">
-            <thead class="table-light">
-                <tr>
-                    <th>Título</th>
-                    <th>Artista</th>
-                    <th>Ano</th>
-                    <th class="text-end">Ações</th>
+        <table class="table table-hover align-middle" style="background-color: transparent !important; border-color: #282828;">
+            <thead>
+                <tr style="border-bottom: 2px solid #282828;">
+                    <th class="ps-3 py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Título</th>
+                    <th class="py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Artista</th>
+                    <th class="py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Ano</th>
+                    <th class="text-center py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Ações</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="border-0">
                 {% for album in albuns %}
-                    <tr>
-                        <td><strong>{{ album.titulo }}</strong></td>
-                        <td>{{ album.artista }}</td>
-                        <td>{{ album.ano }}</td>
-                        <td class="text-end">
-                            <a href="{% url 'album_edit' album.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
-                            <a href="{% url 'album_delete' album.pk %}" class="btn btn-sm btn-outline-danger">Excluir</a>
-                        </td>
-                    </tr>
+                <tr class="album-row" style="border-bottom: 1px solid #1a1a1a;">
+                    <td class="ps-3 py-3">
+                        <span class="text-white fw-bold" style="font-size: 1.05rem;">
+                            <i class="bi bi-disc me-2" style="color: #40c4ff;"></i>{{ album.titulo }}
+                        </span>
+                    </td>
+                    <td style="color: #b3b3b3;">{{ album.artista }}</td>
+                    <td style="color: #b3b3b3;">{{ album.ano }}</td>
+                    <td class="text-center py-3">
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'album_edit' album.pk %}" class="action-link edit-link">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a href="{% url 'album_delete' album.pk %}" class="action-link delete-link">
+                                <i class="bi bi-trash3"></i> Apagar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
                 {% empty %}
-                    <tr>
-                        <td colspan="4" class="text-center py-4 text-muted">Nenhum álbum cadastrado. Comece por adicionar um!</td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="text-center py-5">
+                        <div class="py-4">
+                            <i class="bi bi-journal-album display-4 d-block mb-3 opacity-25 text-white"></i>
+                            <p style="color: #b3b3b3;">Nenhum álbum cadastrado.</p>
+                            <a href="{% url 'album_add' %}" class="btn btn-outline-light rounded-pill px-4 mt-2">Adicionar o primeiro</a>
+                        </div>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<style>
+    /* Remover estilos padrão da tabela que causam o fundo branco */
+    .table { --bs-table-bg: transparent !important; color: #ffffff !important; }
+    
+    /* Efeito de hover na linha estilo Spotify/GeoBeats */
+    .album-row:hover {
+        background-color: rgba(255, 255, 255, 0.07) !important;
+        transition: background 0.2s ease-in-out;
+    }
+
+    /* Links de Ação Limpos */
+    .action-link {
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: 0.2s;
+    }
+
+    .edit-link { color: #ffc107 !important; } /* Amarelo */
+    .delete-link { color: #ff4444 !important; } /* Vermelho */
+
+    .action-link:hover {
+        filter: brightness(1.2);
+        text-decoration: underline !important;
+    }
+</style>
 {% endblock %}

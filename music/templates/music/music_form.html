@@ -3,21 +3,64 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header bg-white py-3">
-                <h4 class="m-0">{{ titulo }}</h4>
+        <div class="card shadow-lg border-0 bg-dark text-white" style="background-color: #121212 !important; border-radius: 15px;">
+            <div class="card-header border-0 bg-transparent py-4 text-center">
+                <h3 class="m-0 fw-bold" style="color: #40c4ff;">{{ titulo }}</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body p-4">
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <div class="mt-4">
-                        <a href="{% url 'music_list' %}" class="btn btn-secondary me-2">Cancelar</a>
-                        <button type="submit" class="btn btn-success">Salvar Música</button>
+                    
+                    <div class="form-style-custom">
+                        {{ form.as_p }}
+                    </div>
+
+                    <div class="mt-4 d-flex flex-column gap-2">
+                        <button type="submit" class="btn btn-success fw-bold py-2" style="background-color: #44bb00 !important; border: none; border-radius: 8px;">
+                            Salvar Música
+                        </button>
+                        
+                        <a href="{% url 'music_list' %}" class="btn btn-link text-secondary text-decoration-none small text-center">
+                            Cancelar e Voltar
+                        </a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Ajustando os labels para ficarem discretos como na foto */
+    .form-style-custom label {
+        color: #b3b3b3;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    /* Campos de input Brancos/Azulados conforme a captura de tela */
+    .form-style-custom input, 
+    .form-style-custom select, 
+    .form-style-custom textarea {
+        background-color: #e8f0fe !important; /* Cor clara da imagem */
+        border: none !important;
+        color: #000 !important; /* Texto preto dentro do campo branco */
+        border-radius: 8px !important;
+        padding: 12px !important;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    /* Tira o contorno padrão e foca no verde */
+    .form-style-custom input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(68, 187, 0, 0.3);
+    }
+
+    /* Ajuste para o formulário do Django (p) */
+    .form-style-custom p {
+        margin-bottom: 1rem;
+    }
+</style>
 {% endblock %}

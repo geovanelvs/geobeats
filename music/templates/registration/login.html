@@ -1,50 +1,24 @@
 {% extends 'music/base.html' %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center align-items-center" style="min-height: 60vh;">
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-header bg-dark text-white text-center py-3">
-                <h4 class="m-0">Entrar no GeoBeats</h4>
-            </div>
-            <div class="card-body p-4">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.as_p }}
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 mt-2 shadow-sm">Entrar</button>
-                </form>
-
-                <hr class="my-4">
-
-                <div class="text-center">
-                    <p class="mb-2 text-muted small">Ainda não tem conta?</p>
-                    <a href="{% url 'register' %}" class="btn btn-outline-success w-100">Criar Nova Conta</a>
+        <div class="card shadow-lg p-4 text-center">
+            <h3 class="mb-4 fw-bold" style="color: #40c4ff;">Iniciar Sessão</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="text-start mb-3">
+                    <label class="small fw-bold mb-1" style="color: #b3b3b3;">Usuário:</label>
+                    <input type="text" name="username" class="form-control" placeholder="geovane" required>
                 </div>
-            </div>
+                <div class="text-start mb-4">
+                    <label class="small fw-bold mb-1" style="color: #b3b3b3;">Senha:</label>
+                    <input type="password" name="password" class="form-control" placeholder="********" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100 fw-bold">Entrar</button>
+            </form>
+            <p class="text-footer-white">Acesso restrito a utilizadores autorizados.</p>
         </div>
     </div>
 </div>
-
-<style>
-    input { 
-        display: block; 
-        width: 100%; 
-        padding: .375rem .75rem; 
-        font-size: 1rem; 
-        font-weight: 400; 
-        line-height: 1.5; 
-        color: #212529; 
-        background-color: #fff; 
-        border: 1px solid #ced4da; 
-        border-radius: .375rem; 
-        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    }
-    input:focus {
-        border-color: #86b7fe;
-        outline: 0;
-        box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
-    }
-</style>
 {% endblock %}

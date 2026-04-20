@@ -1,57 +1,212 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoBeats</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        /* CONFIGURAÇÕES GERAIS */
+        body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: #000000 !important;
+            border-bottom: 1px solid #1a1a1a;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            color: #40c4ff !important;
+            font-size: 2.2rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -1.5px;
+            text-decoration: none;
+        }
+
+        /* LINKS DE NAVEGAÇÃO CLICÁVEIS */
+        .nav-main-link {
+            color: #bbfd05 !important;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .nav-main-link:hover {
+            color: #ffffff !important;
+            text-decoration: underline;
+        }
+
+        .nav-main-link.active {
+            color: #ffffff !important; 
+            cursor: default;
+            text-decoration: none;
+        }
+
+        /* SAUDAÇÃO */
+        .user-greeting {
+            color: #ffffff !important;
+            font-weight: 500;
+            margin-right: 20px;
+            font-size: 1.1rem;
+        }
+        .username-purple {
+            color: #a333ff !important;
+            font-weight: 700;
+        }
+
+        /* BOTÕES */
+        .btn-nav-white {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            border-radius: 25px !important;
+            font-weight: bold;
+            padding: 8px 25px !important;
+            text-decoration: none;
+        }
+        .btn-nav-red {
+            background-color: #ff4444 !important;
+            color: #ffffff !important;
+            border-radius: 25px !important;
+            font-weight: bold;
+            padding: 8px 30px !important;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-nav-red:hover {
+            background-color: #cc0000 !important;
+            transform: scale(1.05);
+        }
+
+        /* ESTILO GLOBAL PARA FORMULÁRIOS E TABELAS */
+        label { color: #ffffff !important; font-weight: 600; margin-bottom: 5px; display: block; }
+        .card { background-color: #121212 !important; border: 1px solid #282828 !important; border-radius: 15px !important; }
+        input.form-control { background-color: #e8f0fe !important; border: none !important; color: #000 !important; border-radius: 8px !important; padding: 12px !important; }
+        .btn-success { background-color: #44bb00 !important; border: none !important; border-radius: 8px !important; font-weight: bold !important; padding: 12px !important; }
+
+        /* ESTILO PARA AS MENSAGENS (TOAST) */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .toast-geobeats {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+            overflow: hidden;
+            opacity: 0;
+            animation: slideInFadeOut 4s forwards;
+        }
+        
+        .toast-success { border-left: 5px solid #44bb00; }
+        .toast-error { border-left: 5px solid #ff4444; }
+        .toast-warning { border-left: 5px solid #ffbb33; }
+        .toast-info { border-left: 5px solid #40c4ff; }
+
+        .toast-geobeats .toast-body {
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        @keyframes slideInFadeOut {
+            0% { transform: translateX(100%); opacity: 0; }
+            10% { transform: translateX(0); opacity: 1; }
+            80% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; display: none; }
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow">
-        <div class="container">
-            <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'music_list' %}{% else %}{% url 'login' %}{% endif %}">🎵 GeoBeats</a>
+<nav class="navbar">
+    <div class="container d-flex justify-content-between align-items-center">
+        
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand me-4" href="{% url 'music_list' %}">
+                <i class="bi bi-headphones me-2"></i> GeoBeats
+            </a>
 
-            {% if user.is_authenticated %}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 flex-row gap-4 ms-4">
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'music_list' %}">Músicas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-success fw-bold" href="{% url 'playlist_list' %}">Playlists</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-info fw-bold" href="{% url 'album_list' %}">💿 Álbuns</a>
-                </li>
-            </ul>
+            {% if user.is_authenticated and request.resolver_match.url_name == 'music_list' or request.resolver_match.url_name == 'playlist_list' or request.resolver_match.url_name == 'album_list' %}
+            <div class="d-flex gap-4 ms-2">
+                <a href="{% url 'music_list' %}" class="nav-main-link {% if request.resolver_match.url_name == 'music_list' %}active{% endif %}">Músicas</a>
+                <a href="{% url 'playlist_list' %}" class="nav-main-link {% if request.resolver_match.url_name == 'playlist_list' %}active{% endif %}">Playlists</a>
+                <a href="{% url 'album_list' %}" class="nav-main-link {% if request.resolver_match.url_name == 'album_list' %}active{% endif %}">Álbuns</a>
+            </div>
             {% endif %}
+        </div>
 
-            <div class="d-flex align-items-center ms-auto">
-                {% if user.is_authenticated %}
-                    <span class="text-white me-3">Olá, {{ user.username }}</span>
-                    <form action="{% url 'logout' %}" method="post" class="m-0">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Entrar</a>
+        <div class="d-flex align-items-center">
+            {% if user.is_authenticated %}
+                
+                {% if request.resolver_match.url_name == 'music_list' or request.resolver_match.url_name == 'playlist_list' or request.resolver_match.url_name == 'album_list' %}
+                <span class="user-greeting">
+                    Olá, <span class="username-purple">{{ user.username }}</span>
+                </span>
                 {% endif %}
+
+                <form action="{% url 'logout' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-nav-red">Sair</button>
+                </form>
+
+            {% else %}
+                {% if request.resolver_match.url_name == 'login' %}
+                    <a class="btn-nav-white" href="{% url 'register' %}">Criar Conta</a>
+                {% else %}
+                    <a class="btn-nav-white" href="{% url 'login' %}">Entrar</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+{% if messages %}
+<div class="toast-container">
+    {% for message in messages %}
+        <div class="toast-geobeats 
+            {% if message.tags == 'success' %}toast-success
+            {% elif message.tags == 'error' %}toast-error
+            {% elif message.tags == 'warning' %}toast-warning
+            {% else %}toast-info{% endif %}">
+            
+            <div class="toast-body">
+                {% if message.tags == 'success' %}
+                    <i class="bi bi-check-circle-fill me-2 text-success"></i>
+                {% elif message.tags == 'error' %}
+                    <i class="bi bi-x-circle-fill me-2 text-danger"></i>
+                {% elif message.tags == 'warning' %}
+                    <i class="bi bi-exclamation-triangle-fill me-2 text-warning"></i>
+                {% else %}
+                    <i class="bi bi-info-circle-fill me-2 text-info"></i>
+                {% endif %}
+                {{ message }}
             </div>
         </div>
-    </nav>
+    {% endfor %}
+</div>
+{% endif %}
 
-    <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} shadow-sm">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+<div class="container mt-5">
+    {% block content %}{% endblock %}
+</div>
 
-        {% block content %}
-        {% endblock %}
-    </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

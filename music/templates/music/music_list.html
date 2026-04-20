@@ -1,56 +1,85 @@
 {% extends 'music/base.html' %}
 
 {% block content %}
-<div class="card shadow-sm mb-4">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-        <h4 class="m-0">Minhas Músicas</h4>
-        <a href="{% url 'music_add' %}" class="btn btn-primary">Adicionar Música</a>
+<div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center py-4 px-2">
+        <h2 class="m-0 text-white fw-bold" style="font-size: 2rem;">Minhas Músicas</h2>
+        <a href="{% url 'music_add' %}" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm">
+            <i class="bi bi-plus-lg me-2"></i>Adicionar Música
+        </a>
     </div>
     
-    <div class="card-body bg-light border-bottom py-3">
-        <form method="GET" class="d-flex">
-            <input class="form-control me-2" type="search" name="busca" placeholder="Pesquisar por título ou artista..." value="{{ request.GET.busca }}">
-            <button class="btn btn-primary" type="submit">Pesquisar</button>
-            
+    <div class="mb-4">
+        <form method="GET" class="d-flex gap-2">
+            <div class="flex-grow-1">
+                <input class="form-control" type="search" name="busca" 
+                       placeholder="Pesquisar por título ou artista..." value="{{ request.GET.busca }}"
+                       style="background-color: #e8f0fe !important; border: none; color: #000; height: 45px; border-radius: 10px;">
+            </div>
+            <button class="btn btn-success px-4 fw-bold" type="submit" style="border-radius: 10px;">
+                Pesquisar
+            </button>
             {% if request.GET.busca %}
-                <a href="{% url 'music_list' %}" class="btn btn-outline-secondary ms-2">Limpar</a>
+                <a href="{% url 'music_list' %}" class="btn btn-outline-light d-flex align-items-center" style="border-radius: 10px;">
+                    Limpar
+                </a>
             {% endif %}
         </form>
     </div>
+
     <div class="table-responsive">
-        <table class="table table-hover align-middle m-0">
-            <thead class="table-light">
-                <tr>
-                    <th>Título</th>
-                    <th>Artista</th>
-                    <th>Tempo</th>
-                    <th class="text-center">Ações</th>
+        <table class="table table-hover align-middle" style="background-color: transparent !important; border-color: #282828;">
+            <thead>
+                <tr style="border-bottom: 2px solid #282828;">
+                    <th class="ps-3 py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Título</th>
+                    <th class="py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Artista</th>
+                    <th class="py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Tempo</th>
+                    <th class="text-center py-3 border-0 text-white text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Ações</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="border-0">
                 {% for musica in musicas %}
-                    <tr>
-                        <td><strong>{{ musica.titulo }}</strong></td>
-                        <td>{{ musica.artista }}</td>
-                        <td>{{ musica.tempo }}</td>
-                        <td class="text-center">
-                            <a href="{% url 'music_update' musica.id %}" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="{% url 'music_delete' musica.id %}" class="btn btn-sm btn-danger">Apagar</a>
-                        </td>
-                    </tr>
+                <tr class="music-row" style="border-bottom: 1px solid #1a1a1a;">
+                    <td class="ps-3 py-3">
+                        <span class="text-white fw-bold">{{ musica.titulo }}</span>
+                    </td>
+                    <td style="color: #faf8f8;">{{ musica.artista }}</td>
+                    <td style="color: #faf8f8;">
+                        <i class="bi bi-clock me-1 small"></i>{{ musica.tempo }}
+                    </td>
+                    <td class="text-center py-3">
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'music_update' musica.id %}" class="action-link edit-link">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a href="{% url 'music_delete' musica.id %}" class="action-link delete-link">
+                                <i class="bi bi-trash3"></i> Apagar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
                 {% empty %}
-                    <tr>
-                        <td colspan="4" class="text-center py-4 text-muted">
-                            {% if request.GET.busca %}
-                                Nenhuma música encontrada para a sua pesquisa.
-                            {% else %}
-                                Nenhuma música cadastrada. Comece por adicionar uma!
-                            {% endif %}
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="text-center py-5 text-white">
+                        Nenhuma música encontrada.
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<style>
+    /* Ajustes finais de cores */
+    .table { --bs-table-bg: transparent !important; color: #ffffff !important; }
+    
+    .music-row:hover {
+        background-color: rgba(255, 255, 255, 0.07) !important;
+    }
+
+    .action-link { text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .edit-link { color: #ffc107 !important; }
+    .delete-link { color: #ff4444 !important; }
+</style>
 {% endblock %}
