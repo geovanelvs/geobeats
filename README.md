@@ -142,11 +142,11 @@ http://127.0.0.1:8000/
 ### 1. Listar músicas
 
 * Método: GET  
-* Rota: `/api/musicas/`  
+* Rota: `/music/api/musicas/`  
 * Status: 200 OK  
 
 ```bash
-curl http://127.0.0.1:8000/api/musicas/
+curl http://127.0.0.1:8000/music/api/
 ```
 
 ---
@@ -154,11 +154,11 @@ curl http://127.0.0.1:8000/api/musicas/
 ### 2. Buscar música por ID
 
 * Método: GET  
-* Rota: `/api/musicas/{id}`  
+* Rota: `/music/api/musicas/{id}`  
 * Status: 200 OK / 404 Not Found  
 
 ```bash
-curl http://127.0.0.1:8000/api/musicas/1
+curl http://127.0.0.1:8000/music/api/musicas/4
 ```
 
 ---
@@ -166,7 +166,7 @@ curl http://127.0.0.1:8000/api/musicas/1
 ### 3. Criar música
 
 * Método: POST  
-* Rota: `/api/musicas/`  
+* Rota: `/music/api/musicas/`  
 * Status: 201 Created  
 
 #### Corpo da requisição:
@@ -193,7 +193,7 @@ curl http://127.0.0.1:8000/api/musicas/1
 ### 5. Remover música
 
 * Método: DELETE  
-* Rota: `/api/musicas/{id}`  
+* Rota: `/music/api/musicas/{id}`  
 * Status: 204 No Content / 404 Not Found  
 
 ---
